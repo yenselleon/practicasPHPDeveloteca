@@ -3,11 +3,17 @@
 include("cabecera.php"); 
 include("conexion.php"); 
 
+if($_POST){
+    $objConexion= new conexion();
+    $nombreInput= $_POST['nombre'];
+    
+    $sql="INSERT INTO `proyectos` (`id`, `nombre`, `imagen`, `descripcion`) VALUES (NULL, '$nombreInput', 'imagen.jpg', 'es un ecommerce');";
+    $objConexion-> ejecutar($sql);
+    
+}
+
 $objConexion= new conexion();
-$sql="INSERT INTO `proyectos` (`id`, `nombre`, `imagen`, `descripcion`) VALUES (NULL, 'ecommerce', 'imagen.jpg', 'es un ecommerce');";
-$objConexion-> ejecutar($sql);
-
-
+$proyectos=$objConexion->consultar("SELECT * FROM `proyectos`");
 
 ?>
 
@@ -56,11 +62,20 @@ $objConexion-> ejecutar($sql);
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Aplicacion web</td>
-                        <td>imagen.jpg</td>
-                    </tr>
+                    <?php
+                        foreach($proyectos as $proyecto){
+                            
+                            print_r("
+                                <tr>
+                                    <td>$proyecto[id]</td>
+                                    <td>A$proyecto[nombre]</td>
+                                    <td>$proyecto[imagen]</td>
+                                </tr>
+                            ");
+
+                        }
+
+                    ?>
 
                 </tbody>
             </table>
